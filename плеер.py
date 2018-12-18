@@ -14,6 +14,7 @@ from pygame import mixer
 from pydub import AudioSegment
 import mutagen.mp3
 
+
 AudioSegment.ffmpeg = "C:\\ffmpeg\\bin\\ffmpeg.exe"
 AudioSegment.ffprobe = "C:\\ffmpeg\\bin\\ffprobe.exe"
 AudioSegment.converter = "C:\\ffmpeg\\bin\\ffmpeg.exe"
@@ -112,8 +113,8 @@ class Ui_MainWindow(object):
         self.exitBtn.setText(_translate("MainWindow", "Выход"))
 
 
-#mp3=mutagen.mp3.MP3(r'D:\Музыка\Agualung - Brighter Than Sunshine1.mp3')
-#mixer.init(frequency=int(mp3.info.sample_rate*4))
+#mp3 = mutagen.mp3.MP3(r'D:\Музыка\Agualung - Brighter Than Sunshine1.mp3')
+#mixer.init(frequency = int(mp3.info.sample_rate*4))
 #mixer.init()
 
 
@@ -122,13 +123,13 @@ class MyWin(QtWidgets.QMainWindow):
         QtWidgets.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        path = os.getcwd()+'\\sound1.mp3'
-        p=os.getcwd()+'\\dir.txt'
+        path = os.getcwd() + '\\sound1.mp3'
+        p = os.getcwd() + '\\dir.txt'
         if(os.path.exists(p)):
-            file=open(u''+p)
+            file=open(u'' + p)
             self.ui.lineEdit.setText(file.read().strip())
             file.close()
-            self.mode='mp3'
+            self.mode = 'mp3'
 
                              
         self.ui.searchBtn.clicked.connect(self.scandisk)
@@ -143,99 +144,101 @@ class MyWin(QtWidgets.QMainWindow):
         self.ui.fastBtn.clicked.connect(self.faster)
         self.ui.slowBtn.clicked.connect(self.slowly)
         self.ui.exitBtn.clicked.connect(self.close)
-        self.songs=[]
-        self.mixer=[]
-        self.flag=0
+        self.songs = []
+        self.mixer = []
+        self.flag = 0
         self.paused = True
         self.scandisk()
         
    
         
     def scandisk(self):
-        self.mode='mp3'
-        mas=[]
-        mas2=[]
-        p=str(self.ui.lineEdit.text()).strip()
-        file = codecs.open(u''+os.getcwd()+'\\dir.txt', "w", "utf-8")
+        self.mode = 'mp3'
+        mas = []
+        mas2 = []
+        p = str(self.ui.lineEdit.text()).strip()
+        file = codecs.open(u'' + os.getcwd() + '\\dir.txt', "w", "utf-8")
         file.write(p)
         file.close()
             
         for rootdir, dirs, files in os.walk(str(p)):
             for file in files:       
-                if((file.split('.')[-1])=='mp3'):
+                if((file.split('.')[-1]) == 'mp3'):
                     mas.append(os.path.join(rootdir, file))
                     mas2.append(os.path.join(rootdir, file).split('\\')[-2])
         mas2 = dict(zip(mas2, mas2)).values()
-        self.mp3=mas
+        self.mp3 = mas
         self.ui.searchlist.clear()
         for x in mas2:
             self.ui.searchlist.addItem(x.strip())
         
     
     def getfiles(self):
-        self.flag=1
-        self.mode='song'
-        self.songs=[]
+        self.flag = 1
+        self.mode = 'song'
+        self.songs = []
         self.ui.playlist.clear()
-        catname=self.ui.searchlist.currentItem().text()
+        catname = self.ui.searchlist.currentItem().text()
         for x in self.mp3:
-            mp3=x.split('\\')[-2]
-            if(catname==mp3.strip()):
+            mp3 = x.split('\\')[-2]
+            if(catname == mp3.strip()):
                 self.songs.append(x)
                 self.ui.playlist.addItem(x.split('\\')[-1])
         self.ui.playlist.setFocus()
-        self.flag=0
+        self.flag = 0
         
     def playmusic(self):
-        if(self.flag==0):
-            selitem=self.ui.playlist.currentRow()
-            put=self.songs[selitem]
+        if(self.flag == 0):
+            selitem = self.ui.playlist.currentRow()
+            put = self.songs[selitem]
             mixer.quit()
             mixer.init()
             mixer.music.stop()
-            mixer.music.load(u''+put)
+            mixer.music.load(u'' + put)
             mixer.music.play()
 
     def faster(self):
         try:
-            if(self.flag==0):
-                selitem=self.ui.playlist.currentRow()
-                put=self.songs[selitem]
+            if(self.flag == 0):
+                selitem = self.ui.playlist.currentRow()
+                put = self.songs[selitem]
                 mixer.music.stop()
                 mixer.quit()
-                print(u''+put)
-                mp3=mutagen.mp3.MP3(u''+put)
-                mixer.init(frequency=mp3.info.sample_rate*3)
+                print(u'' + put)
+                mp3 = mutagen.mp3.MP3(u'' + put)
+                mixer.init(frequency = mp3.info.sample_rate * 3)
 
-                mixer.music.load(u''+put)
+                mixer.music.load(u'' + put)
                 mixer.music.play()
         except Exception as e:
             print(e)
+
     def slowly(self):
         try:
-            if(self.flag==0):
-                selitem=self.ui.playlist.currentRow()
-                put=self.songs[selitem]
+            if(self.flag == 0):
+                selitem = self.ui.playlist.currentRow()
+                put = self.songs[selitem]
                 mixer.music.stop()
                 mixer.quit()
-                print(u''+put)
-                mp3=mutagen.mp3.MP3(u''+put)
-                mixer.init(frequency=int(mp3.info.sample_rate/3))
+                print(u'' + put)
+                mp3 = mutagen.mp3.MP3(u'' + put)
+                mixer.init(frequency = int(mp3.info.sample_rate / 3))
 
-                mixer.music.load(u''+put)
+                mixer.music.load(u'' + put)
                 mixer.music.play()
         except Exception as e:
             print(e)
+
     def addmusic(self):
-        if(self.flag==0):
-            selitem=self.ui.playlist.currentRow()
-            put=self.songs[selitem]
+        if(self.flag == 0):
+            selitem = self.ui.playlist.currentRow()
+            put = self.songs[selitem]
             self.mixer.append(put)
             self.ui.mixlist.addItem(put.split('\\')[-1])
     
     def mix(self):
         
-        if(self.flag==0):
+        if(self.flag == 0):
             try:
                 output = AudioSegment.from_mp3(self.mixer[0])
                 for i in range(1,len(self.mixer)):
@@ -243,14 +246,15 @@ class MyWin(QtWidgets.QMainWindow):
                     print(self.mixer[1])
                     sound1 = AudioSegment.from_mp3(self.mixer[1])
                     print(sound1)
-                    output= output.append(sound1)
+                    output = output.append(sound1)
                 output.export(format = "mp3")
             except Exception as e:
                 print(e)
+
     def delete(self):
-        self.flag=1
-        self.mode='song'
-        self.mixer=[]
+        self.flag = 1
+        self.mode = 'song'
+        self.mixer = []
         self.ui.mixlist.clear()
         self.ui.mixlist.setFocus()
         self.flag=0
@@ -274,6 +278,7 @@ class MyWin(QtWidgets.QMainWindow):
             uic.loadUi('пока.ui',self)
         else:
             pass
+
 
 if __name__=="__main__":
     app = QtWidgets.QApplication(sys.argv)
