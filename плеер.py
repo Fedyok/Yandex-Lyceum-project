@@ -3,6 +3,21 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys,os,codecs
+from PyQt5 import uic
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
+from PyQt5.QtWidgets import QInputDialog, QMessageBox
+from PyQt5.QtCore import QCoreApplication
+from PyQt5 import QtCore, QtGui, QtWidgets
+import pygame
+from pygame import mixer
+from pydub import AudioSegment
+import mutagen.mp3
+
+AudioSegment.ffmpeg = "C:\\ffmpeg\\bin\\ffmpeg.exe"
+AudioSegment.ffprobe = "C:\\ffmpeg\\bin\\ffprobe.exe"
+AudioSegment.converter = "C:\\ffmpeg\\bin\\ffmpeg.exe"
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -96,17 +111,6 @@ class Ui_MainWindow(object):
         self.slowBtn.setText(_translate("MainWindow", "В 2 раза медленнее"))
         self.exitBtn.setText(_translate("MainWindow", "Выход"))
 
-
-import sys,os,codecs
-from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
-from PyQt5.QtWidgets import QInputDialog, QMessageBox
-from PyQt5.QtCore import QCoreApplication
-from PyQt5 import QtCore, QtGui, QtWidgets
-import pygame
-from pygame import mixer
-from pydub import AudioSegment
-import mutagen.mp3
 
 #mp3=mutagen.mp3.MP3(r'D:\Музыка\Agualung - Brighter Than Sunshine1.mp3')
 #mixer.init(frequency=int(mp3.info.sample_rate*4))
@@ -240,7 +244,7 @@ class MyWin(QtWidgets.QMainWindow):
                     sound1 = AudioSegment.from_mp3(self.mixer[1])
                     print(sound1)
                     output= output.append(sound1)
-                output.export(u''+path,format = "mp3")
+                output.export(format = "mp3")
             except Exception as e:
                 print(e)
     def delete(self):
